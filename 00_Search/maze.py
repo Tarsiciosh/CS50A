@@ -10,7 +10,8 @@ class StackFrontier():
     def __init__(self):
         self.frontier = []
 
+def main():
+    print("hello")
 
-
-#    def add(self.node):
-
+if __name__ == "__main__":
+    main()
