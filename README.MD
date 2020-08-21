@@ -6,7 +6,8 @@ $ cd frameworks/artificial-inteligence
 $ python3 -m venv/venv
 $ . venv/bin/activate
 $ cd github/CS50A/00_Search
-$ python3 maze.py
-
+$ pip install --upgrade pip (upgrade pip)
+$ pip3 install -r requirements.txt
+$ python maze.py maze1.txt
 
 ## 01_...
