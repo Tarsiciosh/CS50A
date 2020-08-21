@@ -73,7 +73,7 @@ class Maze():
                     elif contents[i][j] == " ":
                         row.append(False)
                     else:
-                        row.append(True)
+                        row.append(True) # it is a wall
                 except IndexError:
                     row.append(False)
             self.walls.append(row)
@@ -97,6 +97,7 @@ class Maze():
                 else:
                     print(" ", end="")
             print() 
+        print()
         print()
 
 
@@ -125,7 +126,7 @@ class Maze():
         # Initialize frontier to just the starting position
         # first state is the same first node?
         start = Node(state=self.start, parent=None, action=None)
-        frontier = StackFrontier()
+        frontier = QueueFrontier() # StackFrontier()
         frontier.add(start)
 
         # Initialize an empty explored set
@@ -228,3 +229,7 @@ print("States Explored:", m.num_explored)
 print("Solution:")
 m.print()
 m.output_image("maze.png", show_explored=True)
+
+actions, cells = m.solution # de-structure the tuple?
+print (actions)
+print (cells)
