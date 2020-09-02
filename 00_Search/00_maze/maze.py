@@ -82,7 +82,14 @@ class Maze():
 
 
     def print(self):
-        solution = self.solution[1] if self.solution is not None else None
+        # solution = self.solution[1] if self.solution is not None else None
+        # 0:actions 1:cells of the tuple
+
+        if self.solution is not None:
+            _, solutionCells = self.solution # not sure about "_"
+        else:
+            solutionCells = None 
+
         print()
         for i, row in enumerate(self.walls):
             for j, col in enumerate(row):
@@ -92,7 +99,7 @@ class Maze():
                     print("A", end="")
                 elif (i, j) == self.goal:
                     print("B", end="")
-                elif solution is not None and (i, j) in solution:
+                elif solutionCells is not None and (i, j) in solutionCells:
                     print("*", end="")
                 else:
                     print(" ", end="")
@@ -111,7 +118,7 @@ class Maze():
         ]
 
         result = []
-        for action, (r, c) in candidates:
+        for action, (r, c) in candidates: # de-structure
             if 0 <= r < self.height and 0 <= c < self.width and not self.walls[r][c]:
                 result.append((action, (r, c)))
         return result
@@ -126,7 +133,7 @@ class Maze():
         # Initialize frontier to just the starting position
         # first state is the same first node?
         start = Node(state=self.start, parent=None, action=None)
-        frontier = QueueFrontier() # StackFrontier()
+        frontier = StackFrontier() # QueueFrontier() # StackFrontier()
         frontier.add(start)
 
         # Initialize an empty explored set
@@ -153,14 +160,14 @@ class Maze():
                     node = node.parent
                 actions.reverse()
                 cells.reverse()
-                self.solution = (actions, cells)
+                self.solution = (actions, cells) # creates a tuple
                 return
 
             # Mark node as explored
             self.explored.add(node.state)
 
             # Add neighbors to frontier
-            for action, state in self.neighbors(node.state):
+            for action, state in self.neighbors(node.state): # de-structure
                 if not frontier.contains_state(state) and state not in self.explored:
                     child = Node(state=state, parent=node, action=action)
                     frontier.add(child)
@@ -231,5 +238,9 @@ m.print()
 m.output_image("maze.png", show_explored=True)
 
 actions, cells = m.solution # de-structure the tuple?
-print (actions)
-print (cells)
+print("Actions:")
+print (actions) # = print(solution[0])
+
+print("Cells:")
+print (cells) # = print(solution[1])
+

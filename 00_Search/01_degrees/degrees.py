@@ -4,13 +4,13 @@ import sys
 from util import Node, StackFrontier, QueueFrontier
 
 # Maps names to a set of corresponding person_ids
-names = {}
+names = {} # {'name1':{'person-id','person-id'}, 'name2':{''}}
 
 # Maps person_ids to a dictionary of: name, birth, movies (a set of movie_ids)
-people = {}
+people = {} # {'person-id': {'name':'name', 'birth': 'birth', 'movies':{'movie-id-1, movie-id-2'}} }
 
 # Maps movie_ids to a dictionary of: title, year, stars (a set of person_ids)
-movies = {}
+movies = {} # {movie-id: {title: "title", year: "year", stars: {person-id-1, person-id-2}}}
 
 
 def load_data(directory):
@@ -45,7 +45,7 @@ def load_data(directory):
     with open(f"{directory}/stars.csv", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
-            try:
+            try: # it tries if people[row["person_id"]] exists
                 people[row["person_id"]]["movies"].add(row["movie_id"])
                 movies[row["movie_id"]]["stars"].add(row["person_id"])
             except KeyError:
@@ -62,6 +62,16 @@ def main():
     load_data(directory)
     print("Data loaded.")
 
+    """
+    for key in people:
+        print(key, people[key])
+    for key in movies:
+        print(key, movies[key])
+    for key in names:
+        row = list(names.get(key,set()))
+        print(row)
+    """
+
     source = person_id_for_name(input("Name: "))
     if source is None:
         sys.exit("Person not found.")
@@ -70,6 +80,9 @@ def main():
         sys.exit("Person not found.")
 
     path = shortest_path(source, target)
+
+    print("path")
+    print(path)
 
     if path is None:
         print("Not connected.")
@@ -92,10 +105,72 @@ def shortest_path(source, target):
     If no possible path, returns None.
     """
 
-    # TODO
-    raise NotImplementedError
+    # keep track of number of states explores
+    # num_explored = 0
 
+    # Initialize frontier to just the starting position
+    start = Node(state=source, parent=None, action= None)
+    frontier = QueueFrontier() # BFS
+    frontier.add(start)
 
+    # Initialize an empty explored set
+    explored = set()
+
+    # Keep looping until solution found
+    while True:
+
+        # If nothing left in frontier, then no path
+        if frontier.empty():
+            return None
+
+        # Choose a node from the frontier
+        node = frontier.remove()
+
+        # If node is the goal, then we have a solution
+        if node.state == target:
+            """
+            solution = []
+            while node.parent is not None:
+                step = (node.action, node.state)
+                solution.append(step)
+                node = node.parent    
+            solution.reverse()
+            """
+            return paths_to_node(node)
+        
+        # Add neighbors to frontier actions:movies state:person
+        for action, state in neighbors_for_person(node.state):
+            if not frontier.contains_state(state) and state not in explored:
+                
+                if state == target:
+                    print("target found in neighbors!")
+                    targetNode = Node(state=state,parent=node, action= action)
+                    return paths_to_node(targetNode)
+                    """
+                    solution = []
+                    while myNode.parent is not None:
+                        step = (myNode.action, myNode.state)
+                        solution.append(step)
+                        myNode = myNode.parent
+                    solution.reverse()
+                    return solution
+                    """            
+                child = Node(state=state, parent=node, action= action)
+                frontier.add(child)
+ 
+        # Mark node as explored
+        explored.add(node.state)
+
+def paths_to_node (node):
+    solution = []
+    while node.parent is not None:
+        step = (node.action, node.state)
+        solution.append(step)
+        node = node.parent    
+    solution.reverse()
+    return solution
+
+    
 def person_id_for_name(name):
     """
     Returns the IMDB id for a person's name,
