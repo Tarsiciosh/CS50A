@@ -15,4 +15,6 @@ $ python maze.py maze1.txt
 
 $ python3 -m pip install pygame==2.0.0.dev6
 
-## 01_...
+## 01_Knowledge
+
+$ (venv)pip install termcolor
