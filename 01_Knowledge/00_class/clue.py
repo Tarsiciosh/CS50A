@@ -51,4 +51,5 @@ knowledge.add(Not(ballroom))
 
 check_knowledge(knowledge)
 
-print(symbols)
+print("symbols:",symbols)
+print("KB:",knowledge)

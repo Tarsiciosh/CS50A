@@ -1,9 +1,11 @@
 import sys
 import csv
+import random
 
 def main():
 
     """ 00 SEARCH """
+
     print("hello")
     names = ["Tomas", "Jack", "Brian"]
 
@@ -50,6 +52,43 @@ def main():
     myNumber = int(myTextNumber) + 2 
 
     print (myNumber)
-                    
+
+    """ 01 KNOWLEDGE """
+
+    mySet = set()
+
+    mySet.add("hello")
+    mySet.add("hallo")
+    mySet.add("hola")
+
+    print(mySet)
+
+    if "hola" in mySet:
+        print("hola is in mySet")
+    else:
+        print("hola is not in mySet")
+    
+    mySet.remove("hola")
+
+    if "hola" in mySet:
+        print("hola is in mySet")
+    else:
+        print("hola is not in mySet")
+
+    a = set()
+
+    a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+
+    b = {2,3}
+
+    a = a.difference(b) 
+
+    print (a)
+
+    while len(a) != 0:
+        c = a.pop()
+        print(c)
+        print(a)
+
 if __name__ == "__main__":
     main()
