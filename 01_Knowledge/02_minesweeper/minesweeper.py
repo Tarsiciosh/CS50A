@@ -193,9 +193,10 @@ class MinesweeperAI():
                if they can be inferred from existing knowledge
         """
         
-        print("knowledge before:")
-        for sentence in self.knowledge:
-            print(sentence)
+        #print("knowledge before:")
+        #for sentence in self.knowledge:
+        #    print(sentence)
+       
         
         #1
         self.moves_made.add(cell) 
@@ -211,23 +212,30 @@ class MinesweeperAI():
                 if (i, j) == cell:
                     continue
                 if 0 <= i < self.height and 0 <= j < self.width:
-                    if (i,j) not in self.safes and (i,j) not in self.mines:
+                    if (i,j) not in self.safes: # and (i,j) not in self.mines:
                         neighbors.add((i,j))
 
         sentence = Sentence(neighbors, count)
         self.knowledge.append(sentence)
 
-        knowledgeChanged = True
+        # print("sentence:",sentence)
 
-        
+        # print("knowledge after appending:")
+        #for sentence in self.knowledge:
+        #    print(sentence)
+
+        knowledgeChanged = True
 
         while knowledgeChanged :
             knowledgeChanged = False
             mines = set()
             safes = set()
+
             for sentence in self.knowledge:
                 if sentence.cells == set(): # get rid of empty sentences
                     self.knowledge.remove(sentence)
+                    # print("remove empty sentece")
+                    knowledgeChanged = True
                 else:
                     for cell in sentence.known_mines():
                         mines.add(cell) 
@@ -237,13 +245,12 @@ class MinesweeperAI():
             for cell in mines:
                 self.mark_mine(cell)
                 knowledgeChanged = True 
-                print("new mine", cell)
+                # print("new mine", cell)
                        
             for cell in safes:
                 self.mark_safe(cell)
                 knowledgeChanged = True 
-                print("new safe", cell)
-
+                # print("new safe", cell)
 
             newSentece = Sentence([],0)
             addNewSentece = False
@@ -261,31 +268,10 @@ class MinesweeperAI():
                             sent2 = sentence2
             if addNewSentece:
                 self.knowledge.append(newSentece)
-                self.knowledge.remove(sent1)
-                #self.knowledge.remove(sent2)
+                #self.knowledge.remove(sent1)
+                self.knowledge.remove(sent2)
                 knowledgeChanged = True
-                print("new knowledge enhanced")
-                print(sent1,"subpart of",sent2)
-                print(newSentece)                
-
-        print("knowledge after:")
-        for sentence in self.knowledge:
-            print(sentence)
-
-    def check_for_mines_or_safes(self):
-        mines = set()
-        safes = set()
-        for sentence in self.knowledge:
-            for cell in sentence.known_mines():
-                mines.add(cell) 
-            for cell in sentence.known_safes():
-                safes.add(cell)
-        
-        for cell in mines:
-            self.mark_mine(cell)
-        
-        for cell in safes:
-            self.mark_safe(cell)
+                print(sent1,"subpart of",sent2,"->",newSentece)
     
     def make_safe_move(self):
         """
