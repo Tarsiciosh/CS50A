@@ -5,7 +5,6 @@ import random
 def main():
 
     """ 00 SEARCH """
-
     print("hello")
     names = ["Tomas", "Jack", "Brian"]
 
@@ -53,8 +52,8 @@ def main():
 
     print (myNumber)
 
-    """ 01 KNOWLEDGE """
 
+    """ 01 KNOWLEDGE """
     mySet = set()
 
     mySet.add("hello")
@@ -89,6 +88,11 @@ def main():
         c = a.pop()
         print(c)
         print(a)
+
+    """ 02 UNCERTAINTY """
+
+
+
 
 if __name__ == "__main__":
     main()
