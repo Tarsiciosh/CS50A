@@ -91,8 +91,5 @@ def main():
 
     """ 02 UNCERTAINTY """
 
-
-
-
 if __name__ == "__main__":
     main()
