@@ -8,7 +8,7 @@ def main():
     print("hello")
     names = ["Tomas", "Jack", "Brian"]
 
-    # the (name[0]...) is a generator
+    # the (name[0] == 'T' for name in names) is a generator!
     for item in (name[0] == "T" for name in names):
         print(item)
 
